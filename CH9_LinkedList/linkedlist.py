@@ -2,6 +2,16 @@ from node import Node
 
 
 class LinkedList:
+    
+    def add_to_tail(self, node):
+        if self.head is None:
+            self.head = node
+            return
+        
+        for last_node in self:
+            pass
+        last_node.set_next(node)
+
     def __init__(self):
         self.head = None
 

@@ -1,22 +1,14 @@
 from linkedlist import *
 
-# Updated test cases with character names from "The Hateful Eight"
 run_cases = [
-    ("John Ruth", ["Major Marquis Warren", "John Ruth"]),
-    ("Daisy Domergue", ["Major Marquis Warren", "John Ruth", "Daisy Domergue"]),
-    (
-        "Chris Mannix",
-        ["Major Marquis Warren", "John Ruth", "Daisy Domergue", "Chris Mannix"],
-    ),
+    (["Major Marquis Warren", "John Ruth"],),
+    (["Major Marquis Warren", "John Ruth", "Daisy Domergue"],),
 ]
 
 submit_cases = run_cases + [
+    (["Major Marquis Warren", "John Ruth", "Daisy Domergue", "Chris Mannix"],),
+    (["Major Marquis Warren", "John Ruth", "Daisy Domergue", "Chris Mannix", "Bob"],),
     (
-        "Bob",
-        ["Major Marquis Warren", "John Ruth", "Daisy Domergue", "Chris Mannix", "Bob"],
-    ),
-    (
-        "Oswaldo Mobray",
         [
             "Major Marquis Warren",
             "John Ruth",
@@ -29,53 +21,38 @@ submit_cases = run_cases + [
 ]
 
 
-def test(linked_list, input, expected_state):
+def test(inputs):
     print("---------------------------------")
-    print(f"Linked List: {linked_list}")
-    print(f"Set Next: {input}")
-    print(f"Expected: {expected_state}")
-    node = Node(input)
-    last_node = get_last_node(linked_list)
-    last_node.set_next(node)
-    try:
-        result = linked_list_to_list(linked_list)
-    except Exception as e:
-        result = f"Error: {e}"
-    print(f"Actual: {result}")
-    if result == expected_state:
+    linked_list = LinkedList()
+    for val in inputs:
+        linked_list.add_to_tail(Node(val))
+    actual = linked_list_to_list(linked_list)
+
+    print(f"Expected: {inputs}")
+    print(f"Actual  : {actual}")
+
+    if actual == inputs:
         print("Pass")
         return True
-    print("Fail")
-    return False
+    else:
+        print("Fail")
+        return False
 
 
 def linked_list_to_list(linked_list):
-    result = []
-    for node in linked_list:
-        result.append(node.val)
-
-    return result
-
-
-def get_last_node(linked_list):
-    current = linked_list.head
-    while hasattr(current, "next") and current.next:
-        current = current.next
-    return current
+    return [node.val for node in linked_list]
 
 
 def main():
     passed = 0
     failed = 0
-    linked_list = LinkedList()
-    linked_list.head = Node("Major Marquis Warren")
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
-        correct = test(linked_list, *test_case)
-        if correct:
+        if test(test_case[0]):
             passed += 1
         else:
             failed += 1
+
     if failed == 0:
         print("============= PASS ==============")
     else:
