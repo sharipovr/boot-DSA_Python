@@ -1,42 +1,40 @@
 import random
 from BSTNode import *
 from user import *
-from ref import *  # ref module is hidden because it has the solution!
 
 run_cases = [
-    (3),
-    (5),
+    (5, "Blake#0", "Carrell#14"),
+    (10, "Ricky#1", "Vennett#29"),
 ]
 
 submit_cases = run_cases + [
-    (10),
+    (15, "Shelley#2", "George#42"),
 ]
 
 
-def test(num_users):
+def test(num_users, min_user, max_user):
     users = get_users(num_users)
-    expected_bst = BSTNode()
+    bst = BSTNode()
     for user in users:
-        ref_implementation(expected_bst, user)
+        bst.insert(user)
     print("=====================================")
-    print("Expecting Tree:")
+    print("Tree:")
     print("-------------------------------------")
-    print_tree(expected_bst)
+    print_tree(bst)
     print("-------------------------------------\n")
-    actual_bst = BSTNode()
-    for user in users:
-        print(f"Inserting {user} into tree...")
-        actual_bst.insert(user)
-    print("\n")
-    print("Actual Tree:")
-    print("-------------------------------------")
-    print_tree(actual_bst)
-    print("-------------------------------------")
-    if ref_inorder(actual_bst, []) == ref_inorder(expected_bst, []):
-        print("Pass \n")
-        return True
-    print("Fail \n")
-    return False
+    print(f"Expected min: {min_user}, max: {max_user}")
+    try:
+        actual_min = bst.get_min()
+        actual_max = bst.get_max()
+        print(f"Actual min: {actual_min.user_name}, max: {actual_max.user_name}")
+        if actual_max.user_name == max_user and actual_min.user_name == min_user:
+            print("Pass \n")
+            return True
+        print("Fail \n")
+        return False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
 
 
 def main():
@@ -44,7 +42,7 @@ def main():
     failed = 0
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
-        correct = test(test_case)
+        correct = test(*test_case)
         if correct:
             passed += 1
         else:

@@ -1,4 +1,15 @@
 class BSTNode:
+    def get_min(self):
+        if self.left is None:
+            return self.val
+        return self.left.get_min()
+
+    def get_max(self):
+        if self.right is None:
+            return self.val
+        return self.right.get_max()
+
+    # don't touch below this line
     def __init__(self, val=None):
         self.left = None
         self.right = None
