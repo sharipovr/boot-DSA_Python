@@ -1,14 +1,16 @@
 from node import Node
 
 
-class LinkedList:
-
-    def add_to_head(self, node):
+class LLQueue:
+    def remove_from_head(self):
         if self.head is None:
-            self.tail = node
-
-        node.set_next(self.head)
-        self.head = node        
+            return None       
+        oldhead = self.head
+        self.head = self.head.next
+        if self.head is None:
+            self.tail = None
+        oldhead.next = None
+        return oldhead
     
     def add_to_tail(self, node):
         if self.head is None:
