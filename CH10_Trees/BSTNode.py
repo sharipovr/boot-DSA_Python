@@ -39,6 +39,103 @@ class BSTNode:
         
         return self
 
+    def preorder(self, visited):
+        """
+        Preorder traversal: Visit ROOT → LEFT → RIGHT
+        
+        Think of it as: "Say hello to the parent, then explore its children"
+        
+        Example tree:
+            4
+           / \
+          2   7
+         /   /
+        1   6
+        
+        Result: [4, 2, 1, 7, 6]
+        """
+        # STEP 1: Visit current node FIRST (if it has a value)
+        # This is the "pre" part - we visit BEFORE children
+        if self.val is not None:
+            visited.append(self.val)
+        
+        # STEP 2: Recursively explore LEFT subtree
+        # We pass the same 'visited' list so all nodes add to it
+        if self.left is not None:
+            self.left.preorder(visited)  # Call ourselves on left child
+        
+        # STEP 3: Recursively explore RIGHT subtree
+        # After left is done, we explore the right side
+        if self.right is not None:
+            self.right.preorder(visited)  # Call ourselves on right child
+        
+        # STEP 4: Return the list (now contains all visited nodes)
+        return visited
+
+    def postorder(self, visited):
+        """
+        Postorder traversal: Visit LEFT → RIGHT → ROOT
+        
+        Think of it as: "Explore all children first, then visit the parent"
+        
+        Example tree:
+            4
+           / \
+          2   7
+         /   /
+        1   6
+        
+        Result: [1, 2, 6, 7, 4]
+        """
+        # STEP 1: Recursively explore LEFT subtree first
+        if self.left is not None:
+            self.left.postorder(visited)  # Call ourselves on left child
+        
+        # STEP 2: Recursively explore RIGHT subtree second
+        if self.right is not None:
+            self.right.postorder(visited)  # Call ourselves on right child
+        
+        # STEP 3: Visit current node LAST (if it has a value)
+        # This is the "post" part - we visit AFTER children
+        if self.val is not None:
+            visited.append(self.val)
+        
+        # STEP 4: Return the list (now contains all visited nodes)
+        return visited
+
+    def inorder(self, visited):
+        """
+        Inorder traversal: Visit LEFT → ROOT → RIGHT
+        
+        Think of it as: "Explore left children, visit parent, then explore right children"
+        
+        For a Binary Search Tree, this produces values in SORTED ORDER!
+        
+        Example tree:
+            4
+           / \
+          2   7
+         /   /
+        1   6
+        
+        Result: [1, 2, 4, 6, 7] (sorted order!)
+        """
+        # STEP 1: Recursively explore LEFT subtree first
+        if self.left is not None:
+            self.left.inorder(visited)  # Call ourselves on left child
+        
+        # STEP 2: Visit current node (if it has a value)
+        # This is the "in" part - we visit IN BETWEEN children
+        if self.val is not None:
+            visited.append(self.val)
+        
+        # STEP 3: Recursively explore RIGHT subtree last
+        if self.right is not None:
+            self.right.inorder(visited)  # Call ourselves on right child
+        
+        # STEP 4: Return the list (now contains all visited nodes in sorted order)
+        return visited
+
     # don't touch below this line
     def get_min(self):
         if self.left is None:
