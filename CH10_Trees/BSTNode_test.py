@@ -1,63 +1,46 @@
-from BSTNode import *
-from user import *
-import random
+from BSTNode import BSTNode
+from user import get_users, User
+
+
+def populate_tree(nodes):
+    if not nodes:
+        return None
+    tree = BSTNode(nodes[0])
+    for node in nodes[1:]:
+        tree.insert(node)
+    return tree
+
 
 run_cases = [
-    (
-        4,
-        [User(0), User(7), User(8), User(11)],
-    ),
-    (
-        6,
-        [User(0), User(5), User(9), User(10), User(16), User(17)],
-    ),
+    (5, True),
+    (3, False),
 ]
 
 submit_cases = run_cases + [
-    (
-        12,
-        [
-            User(2),
-            User(10),
-            User(11),
-            User(17),
-            User(18),
-            User(19),
-            User(22),
-            User(23),
-            User(27),
-            User(30),
-            User(33),
-            User(34),
-        ],
-    ),
+    (1, True),
+    (21, False),
+    (17, True),
+    (7, True),
 ]
 
 
-def test(num_characters, expected):
-    characters = get_users(
-        num_characters
-    )  # Ensure this reflects your project structure
-    bst = BSTNode()
-    for character in characters:
-        bst.insert(character)
-    print("=====================================")
-    print("Tree:")
-    print("-------------------------------------")
-    print(print_tree(bst))
-    print("-------------------------------------\n")
-    print(f"Expected: {expected}")
-    try:
-        actual = bst.inorder([])
-        print(f"Actual:   {actual}")
-        if expected == actual:
-            print("Pass \n")
-            return True
-        print("Fail \n")
-        return False
-    except Exception as e:
-        print(f"Error: {e}")
-        return False
+def test(val_to_check, expected_output):
+    print("---------------------------------")
+    users = get_users(11)
+    tree = populate_tree(users)
+    user_to_find = User(val_to_check)
+    print(f"Tree nodes:")
+    for user in users:
+        print(f" * {user}")
+    print(f"Searching for: {user_to_find}")
+    result = tree.exists(user_to_find)
+    print(f"Expected: {expected_output}")
+    print(f"Actual:   {result}")
+    if result == expected_output:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():
@@ -78,19 +61,6 @@ def main():
         print(f"{passed} passed, {failed} failed, {skipped} skipped")
     else:
         print(f"{passed} passed, {failed} failed")
-
-
-def print_tree(bst_node):
-    lines = []
-    format_tree_string(bst_node, lines)
-    return "\n".join(lines)
-
-
-def format_tree_string(bst_node, lines, level=0):
-    if bst_node is not None:
-        format_tree_string(bst_node.right, lines, level + 1)
-        lines.append(" " * 4 * level + "> " + str(bst_node.val))
-        format_tree_string(bst_node.left, lines, level + 1)
 
 
 test_cases = submit_cases

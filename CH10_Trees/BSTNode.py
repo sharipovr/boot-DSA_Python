@@ -136,6 +136,34 @@ class BSTNode:
         # STEP 4: Return the list (now contains all visited nodes in sorted order)
         return visited
 
+    def exists(self, val):
+        """
+        Checks if a value exists in the BST.
+        Returns True if found, False otherwise.
+        
+        Uses the BST property: left < root < right
+        to efficiently search by going left or right.
+        """
+        # If current node is empty, value doesn't exist here
+        if self.val is None:
+            return False
+        
+        # Found it! Value matches current node
+        if self.val == val:
+            return True
+        
+        # Value is less than current node, search left subtree
+        if val < self.val:
+            if self.left is not None:
+                return self.left.exists(val)
+            return False
+        
+        # Value is greater than current node, search right subtree
+        if val > self.val:
+            if self.right is not None:
+                return self.right.exists(val)
+            return False
+
     # don't touch below this line
     def get_min(self):
         if self.left is None:
