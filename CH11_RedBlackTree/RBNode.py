@@ -49,6 +49,84 @@ class RBTree:
                 parent.left = new_node
             else:
                 parent.right = new_node
+        
+        # Step 4: Fix the red-black tree properties
+        self.fix_insert(new_node)
+
+    def fix_insert(self, current):
+        """
+        Fixes the red-black tree properties after insertion.
+        Maintains the red-black tree invariants through recoloring and rotations.
+        """
+        # While current is not the root and has a red parent
+        while current != self.root and current.parent.red:
+            # Identify parent, grandparent, and uncle
+            parent = current.parent
+            grandparent = parent.parent
+            
+            # If parent is a right child of the grandparent
+            if parent == grandparent.right:
+                uncle = grandparent.left
+                
+                # Case 1: If uncle is red
+                if uncle.red:
+                    # Recolor uncle and parent to black
+                    uncle.red = False
+                    parent.red = False
+                    # Recolor grandparent to red
+                    grandparent.red = True
+                    # Move up the tree by making current node the grandparent
+                    current = grandparent
+                # Case 2: If uncle is black
+                else:
+                    # If current node is the left child of the parent
+                    if current == parent.left:
+                        # Move up the tree by making current node the parent
+                        current = parent
+                        # Rotate right around the current node
+                        self.rotate_right(current)
+                        # Set parent to be the current node's parent
+                        parent = current.parent
+                    
+                    # Recolor the parent to black
+                    parent.red = False
+                    # Recolor the grandparent to red
+                    grandparent.red = True
+                    # Rotate left around the grandparent
+                    self.rotate_left(grandparent)
+            # If parent is a left child of the grandparent
+            else:
+                uncle = grandparent.right
+                
+                # Case 1: If uncle is red
+                if uncle.red:
+                    # Recolor uncle and parent to black
+                    uncle.red = False
+                    parent.red = False
+                    # Recolor grandparent to red
+                    grandparent.red = True
+                    # Move up the tree by making current node the grandparent
+                    current = grandparent
+                # Case 2: If uncle is black
+                else:
+                    # If current node is the right child of the parent
+                    if current == parent.right:
+                        # Move up the tree by making current node the parent
+                        current = parent
+                        # Rotate left around the current node
+                        self.rotate_left(current)
+                        # Set parent to be the current node's parent
+                        parent = current.parent
+                    
+                    # Recolor the parent to black
+                    parent.red = False
+                    # Recolor the grandparent to red
+                    grandparent.red = True
+                    # Rotate right around the grandparent
+                    self.rotate_right(grandparent)
+        
+        # Recolor the root to black
+        self.root.red = False
 
     def rotate_left(self, pivot_parent):
         """

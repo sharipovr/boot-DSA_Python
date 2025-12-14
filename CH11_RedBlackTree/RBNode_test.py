@@ -1,11 +1,9 @@
-import random
 from RBNode import *
 from user import *
 from ref import *  # ref module is hidden because it has the solution!
 
 run_cases = [
     (4),
-    (8),
 ]
 
 submit_cases = run_cases + [
@@ -13,10 +11,34 @@ submit_cases = run_cases + [
 ]
 
 
+def test(num_users):
+    users = get_users(num_users)
+    tree = RBTree()
+    reference_tree = RBTree()
+    for user in users:
+        tree.insert(user)
+        ref_impl_ins(reference_tree, user)
+    print("=====================================")
+    print("Expected:")
+    print("-------------------------------------")
+    print(print_tree(reference_tree))
+    print("-------------------------------------\n")
+    print("Actual:")
+    print("-------------------------------------")
+    print(print_tree(tree))
+    print("-------------------------------------\n")
+
+    if print_tree(tree) == print_tree(reference_tree):
+        print("Pass \n")
+        return True
+    print("Fail \n")
+    return False
+
+
 def print_tree(node):
     lines = []
     format_tree_string(node.root, lines)
-    print("\n".join(lines))
+    return "\n".join(lines)
 
 
 def format_tree_string(node, lines, level=0):
@@ -30,32 +52,6 @@ def format_tree_string(node, lines, level=0):
             + ("[red]" if node.red else "[black]")
         )
         format_tree_string(node.left, lines, level + 1)
-
-
-def test(num_users):
-    users = get_users(num_users)
-    ref_tree = RBTree()
-    for user in users:
-        ref_implementation(ref_tree, user)
-    print("============ NEW TEST ===============")
-    actual_tree = RBTree()
-    for user in users:
-        print(f"Inserting {user} into tree...")
-        actual_tree.insert(user)
-    print("-------------------------------------")
-    print("Expecting Tree:")
-    print("-------------------------------------")
-    print_tree(ref_tree)
-    print("-------------------------------------")
-    print("Actual Tree:")
-    print("-------------------------------------")
-    print_tree(actual_tree)
-    print("-------------------------------------")
-    if ref_inorder(actual_tree.root, []) == ref_inorder(ref_tree.root, []):
-        print("Pass")
-        return True
-    print("Fail")
-    return False
 
 
 def main():
