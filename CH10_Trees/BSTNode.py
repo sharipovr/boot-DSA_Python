@@ -164,6 +164,41 @@ class BSTNode:
                 return self.right.exists(val)
             return False
 
+    def height(self):
+        """
+        Returns the height of the tree rooted at this node.
+        Height is the number of nodes in the longest path from root to leaf.
+        
+        Think of it as: "How many nodes deep is the deepest part of the tree?"
+        
+        Example tree:
+            Elian#2
+           /
+        Astram#1
+        
+        Height: 2 (2 nodes in the longest path: Elian#2 → Astram#1)
+        """
+        # STEP 1: Base case - if node is empty (no value), height is 0
+        # An empty tree has no nodes, so height = 0
+        if self.val is None:
+            return 0
+        
+        # STEP 2: Recursively calculate height of LEFT subtree
+        # Ask the left child: "What's your height?"
+        left_height = 0
+        if self.left is not None:
+            left_height = self.left.height()  # Left child calculates its own height
+        
+        # STEP 3: Recursively calculate height of RIGHT subtree
+        # Ask the right child: "What's your height?"
+        right_height = 0
+        if self.right is not None:
+            right_height = self.right.height()  # Right child calculates its own height
+        
+        # STEP 4: Take the bigger of the two (longest path) and add 1 for current node
+        # max() finds which side is deeper, then +1 counts the current node
+        return max(left_height, right_height) + 1
+
     # don't touch below this line
     def get_min(self):
         if self.left is None:
