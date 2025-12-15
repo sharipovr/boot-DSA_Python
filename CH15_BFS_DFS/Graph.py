@@ -37,6 +37,46 @@ class Graph:
         # When complete, return the visited list containing vertices in the order they were discovered
         return visited
 
+    def depth_first_search(self, v):
+        """
+        Performs depth-first search starting from vertex v.
+        Returns all vertices in the order they were visited.
+        
+        Args:
+            v: The starting vertex (string)
+        
+        Returns:
+            List of vertices in the order they were discovered
+        """
+        # Create an empty list to store visited vertices
+        visited = []
+        
+        # Call depth_first_search_r with the empty list and the start vertex
+        self.depth_first_search_r(visited, v)
+        
+        # Return the list of visited vertices after depth_first_search_r has filled it in
+        return visited
+
+    def depth_first_search_r(self, visited, v):
+        """
+        Recursive helper method for depth-first search.
+        
+        Args:
+            visited: List of vertices that have been visited so far (modified in place)
+            v: The current vertex to visit
+        """
+        # Visit the current vertex by adding it to the list
+        visited.append(v)
+        
+        # Get a sorted list of the neighbors of the current vertex
+        neighbors = sorted(self.graph.get(v, set()))
+        
+        # For each of those neighbors:
+        for neighbor in neighbors:
+            # If the neighboring vertex hasn't been visited yet, visit it by recursively calling depth_first_search_r
+            if neighbor not in visited:
+                self.depth_first_search_r(visited, neighbor)
+
     # don't touch below this line
 
     def __init__(self):
