@@ -23,6 +23,43 @@ class Graph:
         self.graph[u].add(v)
         self.graph[v].add(u)
 
+    def add_node(self, node):
+        """
+        Adds a node (vertex) to the graph with no connections.
+        If the node already exists, it will not overwrite existing connections.
+        """
+        if node not in self.graph:
+            self.graph[node] = set()
+
+    def adjacent_nodes(self, node):
+        """
+        Returns a set of all nodes adjacent to the given node.
+        
+        Args:
+            node: The node (vertex) to get adjacent nodes for
+        
+        Returns:
+            A set of all adjacent nodes, or empty set if node doesn't exist
+        """
+        # Return the set of adjacent nodes for the given node
+        # If the node doesn't exist in the graph, return an empty set
+        return self.graph.get(node, set())
+
+    def unconnected_vertices(self):
+        """
+        Returns a list of vertices that have no connections.
+        A vertex with no edges will have an empty set as its value.
+        
+        Returns:
+            A list of vertices (integers) with no connections
+        """
+        # Find vertices where the set of adjacent nodes is empty
+        unconnected = []
+        for vertex, adjacent_set in self.graph.items():
+            if len(adjacent_set) == 0:
+                unconnected.append(vertex)
+        return unconnected
+
     # don't touch below this line
 
     def edge_exists(self, u, v):
