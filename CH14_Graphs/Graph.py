@@ -1,35 +1,33 @@
 class Graph:
-    def __init__(self, num_vertices):
+    def __init__(self, num_vertices=None):
         """
-        Initializes a graph with num_vertices vertices.
-        Creates an adjacency matrix representation.
+        Initializes a graph using an adjacency list representation.
+        Creates an empty dictionary where vertices map to sets of connected vertices.
+        Note: num_vertices parameter is kept for compatibility but not used with adjacency lists.
         """
-        # Create a new data member called graph, it should be an empty list
-        self.graph = []
-        
-        # Fill the graph with n lists, where n is the number of vertices in the graph
-        # Each of these lists should contain n False values
-        for i in range(num_vertices):
-            self.graph.append([False] * num_vertices)
+        # It should create an empty dictionary called graph as a data member
+        self.graph = {}
 
     def add_edge(self, u, v):
         """
         Adds an edge between vertices u and v.
-        Since the graph is undirected, sets both graph[u][v] and graph[v][u] to True.
+        Uses adjacency list representation where vertices map to sets of connected vertices.
         """
-        # It adds an edge to the graph by setting the corresponding cells to True
-        # There are two cells in the matrix for each pair of vertices (undirected graph)
-        self.graph[u][v] = True
-        self.graph[v][u] = True
+        # Handle the case where a set for a vertex doesn't exist yet
+        if u not in self.graph:
+            self.graph[u] = set()
+        if v not in self.graph:
+            self.graph[v] = set()
+        
+        # Be sure to map both vertices to each other, it's a bidirectional edge
+        self.graph[u].add(v)
+        self.graph[v].add(u)
 
     # don't touch below this line
 
     def edge_exists(self, u, v):
-        if u < 0 or u >= len(self.graph):
+        # Check if vertex u exists in the graph
+        if u not in self.graph:
             return False
-        if len(self.graph) == 0:
-            return False
-        row1 = self.graph[0]
-        if v < 0 or v >= len(row1):
-            return False
-        return self.graph[u][v]
+        # Check if vertex v is in the set of vertices connected to u
+        return v in self.graph[u]

@@ -2,7 +2,6 @@ from Graph import *
 
 run_cases = [
     (
-        3,
         [
             (0, 1),
             (2, 0),
@@ -17,7 +16,6 @@ run_cases = [
         ),
     ),
     (
-        6,
         [
             (0, 1),
             (1, 2),
@@ -39,7 +37,6 @@ run_cases = [
 ]
 submit_cases = run_cases + [
     (
-        6,
         [
             (0, 1),
             (2, 4),
@@ -61,9 +58,9 @@ submit_cases = run_cases + [
 ]
 
 
-def test(num_of_vertices, edges_to_add, edges_to_check):
+def test(edges_to_add, edges_to_check):
     print("=================================")
-    graph = Graph(num_of_vertices)
+    graph = Graph()
     for edge in edges_to_add:
         graph.add_edge(edge[0], edge[1])
         print(f"Added edge: {edge}")
@@ -77,9 +74,9 @@ def test(num_of_vertices, edges_to_add, edges_to_check):
             print(f" - Expecting: {edges_to_check[1][i]}")
             print(f" - Actual: {exists}")
         if actual == edges_to_check[1]:
-            print("Pass")
+            print("Pass \n")
             return True
-        print("Fail")
+        print("Fail \n")
         return False
     except Exception as e:
         print(f"Error: {e}")
