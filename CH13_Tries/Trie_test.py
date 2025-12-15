@@ -1,30 +1,85 @@
 import json
-from main import *
+from Trie import Trie
 
 run_cases = [
-    (["Jerry", "Jess", "Jeremy"], "Je"),
-    (["manifesto", "mantra", "management"], "man"),
+    (
+        [
+            "darnit",
+            "nope",
+            "bad",
+        ],
+        "This is a d@rn1t test with b@d words!",
+        {
+            "@": "a",
+            "1": "i",
+            "4": "a",
+            "!": "i",
+        },
+        [
+            "b@d",
+            "d@rn1t",
+        ],
+    ),
+    (
+        [
+            "darn",
+            "shoot",
+            "gosh",
+        ],
+        "h3ck this fudg!ng thing",
+        {
+            "@": "a",
+            "3": "e",
+        },
+        [],
+    ),
+    (
+        [
+            "dang",
+            "darn",
+            "heck",
+            "gosh",
+        ],
+        "d@ng it to h3ck",
+        {
+            "@": "a",
+            "3": "e",
+        },
+        ["d@ng", "h3ck"],
+    ),
 ]
-
 submit_cases = run_cases + [
-    (["Cush", "Rod", "Laurel"], ""),
-    (["money"], "money"),
-    (["contract", "conduit", "connection"], "con"),
+    (
+        [
+            "darn",
+            "shoot",
+            "fudging",
+        ],
+        "sh00t, I hate this fudg!ng assignment",
+        {
+            "@": "a",
+            "3": "e",
+            "0": "o",
+            "!": "i",
+        },
+        ["sh00t", "fudg!ng"],
+    ),
 ]
 
 
-def test(words, expected_prefix):
+def test(words, document, variations, expected_matches):
     print("---------------------------------")
-    print("Trie:")
-    trie = Trie()
-    for word in words:
-        trie.add(word)
-    print(json.dumps(trie.root, sort_keys=True, indent=2))
-    print(f'Expected: "{expected_prefix}"')
+    print("Document:")
+    print(document)
+    print(f"Variations: {variations}")
+    print(f"Expected matches: {sorted(expected_matches)}")
     try:
-        actual = trie.longest_common_prefix()
-        print(f'Actual: "{actual}"')
-        if actual == expected_prefix:
+        trie = Trie()
+        for word in words:
+            trie.add(word)
+        actual = sorted(trie.advanced_find_matches(document, variations))
+        print(f"Actual matches: {actual}")
+        if actual == sorted(expected_matches):
             print("Pass \n")
             return True
         print("Fail \n")

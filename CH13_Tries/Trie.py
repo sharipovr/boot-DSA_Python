@@ -147,6 +147,52 @@ class Trie:
         # Return the set of matches
         return matches
 
+    def advanced_find_matches(self, document, variations):
+        """
+        Finds all words from the trie that occur in the document, handling character variations.
+        
+        Args:
+            document: The document string to search in
+            variations: Dictionary mapping variation characters to their original characters
+                       (e.g., {'@': 'a', '3': 'e'})
+        
+        Returns:
+            A set of all matching words found in the document (with variations)
+        """
+        # Create a new set() to store the matches
+        matches = set()
+        
+        # Loop over all the indexes of the characters in the document (this value marks the start of the substring)
+        for start_index in range(len(document)):
+            # Keep track of your current level in the trie (a dictionary) starting at the root
+            current_level = self.root
+            
+            # Use another nested loop to iterate over all the indexes of characters in the document, but start at the current index of the outer loop
+            # (this value marks the potential end of the substring)
+            for end_index in range(start_index, len(document)):
+                char = document[end_index]
+                
+                # If the character is in the variations dictionary, use the mapped original character
+                # Otherwise, use the character as-is
+                search_char = variations.get(char, char)
+                
+                # If the inner character (or its variation) is not in the current level, break out of the inner loop, there are no matches here
+                if search_char not in current_level:
+                    break
+                
+                # Otherwise, move to the next level in the trie (based on the inner character, using variation mapping)
+                current_level = current_level[search_char]
+                
+                # If the inner character's level contains the end symbol, add the substring to the matches set
+                # You can calculate the full substring by slicing the document using the indexes of the outer and inner loops
+                # Note: We add the original substring (with variations), not the mapped version
+                if self.end_symbol in current_level:
+                    substring = document[start_index:end_index + 1]
+                    matches.add(substring)
+        
+        # Return the set of matches
+        return matches
+
     def longest_common_prefix(self):
         """
         Returns the longest common prefix among all words in the trie.
