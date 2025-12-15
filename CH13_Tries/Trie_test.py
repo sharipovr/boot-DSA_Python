@@ -2,58 +2,29 @@ import json
 from main import *
 
 run_cases = [
-    (
-        ["dev", "devops", "devs"],
-        {
-            "d": {
-                "e": {
-                    "v": {"*": True, "o": {"p": {"s": {"*": True}}}, "s": {"*": True}}
-                }
-            }
-        },
-    ),
-    (
-        ["qa", "qaops", "qam"],
-        {
-            "q": {
-                "a": {"*": True, "o": {"p": {"s": {"*": True}}}, "m": {"*": True}},
-            }
-        },
-    ),
+    (["Jerry", "Jess", "Jeremy"], "Je"),
+    (["manifesto", "mantra", "management"], "man"),
 ]
 
 submit_cases = run_cases + [
-    (
-        ["pm", "po", "pojo", "pope", "cs", "ce", "ceo", "cfo"],
-        {
-            "p": {
-                "m": {"*": True},
-                "o": {"*": True, "j": {"o": {"*": True}}, "p": {"e": {"*": True}}},
-            },
-            "c": {
-                "s": {"*": True},
-                "e": {"*": True, "o": {"*": True}},
-                "f": {"o": {"*": True}},
-            },
-        },
-    ),
+    (["Cush", "Rod", "Laurel"], ""),
+    (["money"], "money"),
+    (["contract", "conduit", "connection"], "con"),
 ]
 
 
-def test(words, expected_trie):
+def test(words, expected_prefix):
     print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * Words: {words}")
-    print(" * Expected trie:")
-    print(f"{json.dumps(expected_trie, sort_keys=True, indent=2)}")
+    print("Trie:")
+    trie = Trie()
+    for word in words:
+        trie.add(word)
+    print(json.dumps(trie.root, sort_keys=True, indent=2))
+    print(f'Expected: "{expected_prefix}"')
     try:
-        trie = Trie()
-        for word in words:
-            trie.add(word)
-            print(f"Adding {word}...")
-        print("Actual Trie:")
-        print(json.dumps(trie.root, sort_keys=True, indent=2))
-        if trie.root == expected_trie:
+        actual = trie.longest_common_prefix()
+        print(f'Actual: "{actual}"')
+        if actual == expected_prefix:
             print("Pass \n")
             return True
         print("Fail \n")
